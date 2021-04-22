@@ -1,0 +1,72 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %} {{product.product_name}} - My Awesome Cart {% endblock %}
+{% block css %}
+    .buy{
+       color: orange;
+       background-color: Yellow;
+    }
+    .cart{
+         color: Yellow;
+         background-color: Orange;
+      }
+{% endblock %}
+{% block body %}
+
+  <div class="container my-4">
+      <div class="row">
+      <div class="col-md-4">
+      <div class="row">
+          <img src="/media/{{product.image}}" width="233px" height="385px">
+      </div>
+          <div class="row">
+              <button class="btn btn-primary mx-3 my-1 buy"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning-fill" viewBox="0 0 16 16">
+  <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z"/>
+</svg>Buy Now</button>
+              <button class="btn btn-primary my-1 cart"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+  <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+</svg>Add To Cart</button>
+          </div>
+          </div>
+
+      <div class="col-md-8">
+          <h5>{{product.product_name}}</h5>
+          <p><b>Rs.{{product.price}}</b></p>
+          <p>{{product.desc}}</p>
+      </div>
+          </div>
+  </div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    console.log('working');
+    if(localStorage.getItem('cart')==null){
+       var cart = {};
+    }
+    else
+    {
+       cart = JSON.parse(localStorage.getItem('cart'));
+       document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    }
+    $('.cart').click(function(){
+       console.log('clicked');
+       var idstr = this.id.toString();
+       console.log(idstr);
+       if (cart[idstr] !=undefined)
+       {
+          cart[idstr] = cart[idstr] + 1;
+       }
+       else
+       {
+          cart[idstr] = 1;
+       }
+       console.log(cart);
+       localStorage.setItem('cart', JSON.stringify(cart));
+       document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    });
+    $('#popcart').popover();
+    document.getElementById("popcart").setAttribute('data-content', '<h5>Cart For Your Items in my Shopping Cart</h5>');
+</script>
+{% endblock %}
